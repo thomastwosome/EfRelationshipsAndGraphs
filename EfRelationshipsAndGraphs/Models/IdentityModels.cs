@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using System.Data.Entity.Core.Common.CommandTrees;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
@@ -25,9 +26,53 @@ namespace EfRelationshipsAndGraphs.Models
         {
         }
 
+        public DbSet<Parent> Parents { get; set; }
+        public DbSet<Child> Children { get; set; }
+        public DbSet<Pet> Pets { get; set; }
+
+        public DbSet<Charter> Charters { get; set; }
+        public DbSet<Moe> Moes { get; set; }
+        public DbSet<Expenditure> Expenditures { get; set; }
+        //public DbSet<DirectSupport> DirectSupports { get; set; }
+        //public DbSet<Exemption> Exemptions { get; set; }
+        //public DbSet<Staff> Staffs { get; set; }
+        //public DbSet<Student> Students { get; set; }
+        //public DbSet<CostlyExpenditure> CostlyExpenditures { get; set; }
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Charter>()
+                .HasMany(x => x.Moes)
+                .WithRequired(x => x.Charter)
+                .HasForeignKey(x => x.CharterId);
+
+            modelBuilder.Entity<Moe>()
+                .HasRequired(s => s.Expenditure)
+                .WithRequiredPrincipal(x => x.Moe);
+
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.Staffs)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId);
+
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.Students)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId);
+
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.CostlyExpenditures)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId);
+
+
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
