@@ -11,21 +11,14 @@ namespace EfRelationshipsAndGraphs.Controllers
 
         public ActionResult Index()
         {
-            var listModel = new MoeIndexViewModel();
-            var entities = _db.Moes.Include("Charter").ToList();
-
-            foreach (var entity in entities)
+            var models = _db.Moes.Include("Charter").Select(x => new MoeViewModel()
             {
-                var model = new MoeViewModel
-                {
-                    CharterName = entity.Charter.CharterName,
-                    MoeId = entity.MoeId,
-                    MoeName = entity.MoeName,
-                };
-                listModel.Moes.Add(model);
-            }
+                CharterName = x.Charter.CharterName,
+                MoeId = x.MoeId,
+                MoeName = x.MoeName
+            }).ToList();
 
-            return View(listModel);
+            return View(models);
         }
 
         public ActionResult Create(int charterId = 1)
@@ -41,41 +34,13 @@ namespace EfRelationshipsAndGraphs.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(MoeViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
-
-            var entity = new Moe()
-            {
-                CharterId = model.CharterId,
-                MoeName = model.MoeName,
-
-                Expenditure = new Expenditure()
-                {
-                    Name = model.Expenditure.Name
-                }
-            };
-
-            if (!string.IsNullOrEmpty(model.DirectSupport.Name))
-            {
-                entity.DirectSupport = new DirectSupport()
-                {
-                    Name = model.DirectSupport.Name
-                };
-            }
-
-            if (!string.IsNullOrEmpty(model.Exemption.Name))
-            {
-                entity.Exemption = new Exemption()
-                {
-                    Name = model.Exemption.Name
-                };
-            }
-
-            _db.Moes.Add(entity);
-            _db.SaveChanges();
-
-            return RedirectToAction("Index");
+            ActionResult actionResult;
+            if (Save(ref model, out actionResult))
+                return actionResult;
+            return View(model);           
         }
 
         public ActionResult Read(int moeId)
@@ -141,17 +106,49 @@ namespace EfRelationshipsAndGraphs.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Update(MoeViewModel model)
         {
-            if (!ModelState.IsValid) return View(model);
+            ActionResult actionResult;
+            if (Save(ref model, out actionResult))
+                return actionResult;
+            return View(model);
+        }
 
-            var entity = _db.Moes.Include("Charter")
-                                    .Include("Expenditure")
-                                    .Include("DirectSupport")
-                                    .Include("Exemption")
-                                    .Where(x => x.MoeId == model.MoeId).FirstOrDefault();
-            entity.MoeName = model.MoeName;
-            entity.Expenditure.Name = model.Expenditure.Name;
+        private bool Save(ref MoeViewModel model, out ActionResult actionResult)
+        {
+            if (!ModelState.IsValid)
+            {
+                actionResult = View(model);
+                return false;
+            }
+
+            Moe entity;
+            if (model.MoeId == 0) //Create
+            {
+                entity = new Moe()
+                {
+                    CharterId = model.CharterId,
+                    MoeName = model.MoeName,
+
+                    Expenditure = new Expenditure()
+                    {
+                        Name = model.Expenditure.Name
+                    }
+                };
+                _db.Moes.Add(entity);
+            }
+            else //Update
+            {
+                var moeId = model.MoeId;
+                entity = _db.Moes.Include("Charter")
+                                                    .Include("Expenditure")
+                                                    .Include("DirectSupport")
+                                                    .Include("Exemption")
+                                                    .Where(x => x.MoeId == moeId).FirstOrDefault();
+                entity.MoeName = model.MoeName;
+                entity.Expenditure.Name = model.Expenditure.Name;
+            }
 
             //Direct Support
             if (entity.DirectSupport != null)
@@ -181,8 +178,8 @@ namespace EfRelationshipsAndGraphs.Controllers
             }
 
             _db.SaveChanges();
-
-            return RedirectToAction("Index");
+            actionResult = RedirectToAction("Index");
+            return true;
         }
 
         public ActionResult Delete(int moeId)

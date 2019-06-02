@@ -11,6 +11,7 @@
             @Html.AntiForgeryToken()
             @Html.ValidationSummary(false, "", new { @class = "text-danger" })
             @Html.HiddenFor(m => m.CharterId)
+            @Html.HiddenFor(m => m.MoeId)
 
             @Html.LabelFor(m => m.CharterName, new { @class = "control-label" })
             @Html.EditorFor(m => m.CharterName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })

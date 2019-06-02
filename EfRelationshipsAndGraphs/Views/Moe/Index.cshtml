@@ -1,4 +1,4 @@
-﻿@model EfRelationshipsAndGraphs.ViewModels.MoeIndexViewModel
+﻿@model List<EfRelationshipsAndGraphs.ViewModels.MoeViewModel>
 
 @{
     ViewBag.Title = "Moes";
@@ -8,7 +8,7 @@
 <div class="row">
     <div class="col-md-12">
         <p>&nbsp;</p>
-        @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-warning btn-lg btn-primary" })
+        @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-warning btn-primary" })
         <p>&nbsp;</p>
         <table class="table table-bordered table-responsive">
             <thead>
@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var moe in Model.Moes)
+                @foreach (var moe in Model)
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => moe.CharterName)</td>
