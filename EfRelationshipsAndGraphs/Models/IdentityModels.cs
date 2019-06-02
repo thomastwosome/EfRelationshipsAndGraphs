@@ -32,7 +32,7 @@ namespace EfRelationshipsAndGraphs.Models
 
         public DbSet<Charter> Charters { get; set; }
         public DbSet<Moe> Moes { get; set; }
-        public DbSet<Expenditure> Expenditures { get; set; }
+        //public DbSet<Expenditure> Expenditures { get; set; }
         //public DbSet<DirectSupport> DirectSupports { get; set; }
         //public DbSet<Exemption> Exemptions { get; set; }
         //public DbSet<Staff> Staffs { get; set; }
@@ -51,26 +51,40 @@ namespace EfRelationshipsAndGraphs.Models
                 .WithRequired(x => x.Charter)
                 .HasForeignKey(x => x.CharterId);
 
+            //MOE and it's children
             modelBuilder.Entity<Moe>()
                 .HasRequired(s => s.Expenditure)
-                .WithRequiredPrincipal(x => x.Moe);
+                .WithRequiredPrincipal(x => x.Moe)
+                .WillCascadeOnDelete();
 
+            modelBuilder.Entity<Moe>()
+                .HasOptional(s => s.DirectSupport)
+                .WithRequired(x => x.Moe)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Moe>()
+                .HasOptional(s => s.Exemption)
+                .WithRequired(x => x.Moe)
+                .WillCascadeOnDelete();
+
+            //Exemption and it's children
             modelBuilder.Entity<Exemption>()
                 .HasMany(x => x.Staffs)
                 .WithRequired(x => x.Exemption)
-                .HasForeignKey(x => x.MoeId);
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Exemption>()
                 .HasMany(x => x.Students)
                 .WithRequired(x => x.Exemption)
-                .HasForeignKey(x => x.MoeId);
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Exemption>()
                 .HasMany(x => x.CostlyExpenditures)
                 .WithRequired(x => x.Exemption)
-                .HasForeignKey(x => x.MoeId);
-
-
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
             base.OnModelCreating(modelBuilder);
         }

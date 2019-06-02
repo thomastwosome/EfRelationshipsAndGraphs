@@ -7,6 +7,7 @@ namespace EfRelationshipsAndGraphs.ViewModels
         public int MoeId { get; set; }
 
         [Required]
+        [Display(Name = "Exemption")]
         public string Name { get; set; }
     }
 }

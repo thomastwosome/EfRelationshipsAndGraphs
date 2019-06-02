@@ -1,0 +1,89 @@
+﻿@model EfRelationshipsAndGraphs.ViewModels.MoeIndexViewModel
+
+@{
+    ViewBag.Title = "Moes";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <p>&nbsp;</p>
+        @Html.ActionLink("Create", "Create", null, new { @class = "btn btn-warning btn-lg btn-primary" })
+        <p>&nbsp;</p>
+        <table class="table table-bordered table-responsive">
+            <thead>
+                <tr>
+                    <th>Charter Name</th>
+                    <th>Moe</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var moe in Model.Moes)
+                {
+                    <tr>
+                        <td>@Html.DisplayFor(model => moe.CharterName)</td>
+                        <td>@Html.DisplayFor(model => moe.MoeName)</td>
+                        <th>
+                            @Html.ActionLink("View", "Read", "Moe", new { moeId = moe.MoeId }, new { @class = "linkify" })<text> | </text>
+                            @Html.ActionLink("Edit", "Update", "Moe", new { moeId = moe.MoeId }, new { @class = "linkify" })<text> | </text>
+                            <a href="javascript:void(0);" data-url="@Url.Action("Delete", new {moeId = moe.MoeId})"
+                               data-name="@moe.MoeName" class="delete linkify">Delete</a>
+
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="delete-confirmation-modal" tabindex="-1" role="dialog" aria-labelledby="delete-confirmation-modal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="delete-confirmation-modal-label">
+                    <i class="fa fa-warning text-warning"></i> Are you sure?
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        You are going delete <b id="data-name" class="text-capitalize"></b>. Are you sure you want to do this?
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="yes-do-it">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+ <script>
+    $(function () {
+        var modal = $('#delete-confirmation-modal');
+        var doIt = $('#yes-do-it');
+        modal.modal({ show: false });
+        $('.delete').click(function () {
+            var $this = $(this);
+            $('#data-name').text($this.data('name'));
+            doIt.data('url', $this.data('url'));
+            modal.modal('show');
+        });
+        doIt.click(function () {
+            var $this = $(this);
+            $.get($this.data('url'), function (data) {
+                document.location.href = data;
+            });
+        });
+    });
+</script>
+}

@@ -33,6 +33,7 @@
             @Html.ValidationMessageFor(m => m.Exemption.Name, "", new { @class = "text-danger" })
 
             <hr />
+            @Html.ActionLink("Back", "Index", "Moe", null, new { @class = "btn btn-default" })
             <input type="submit" id="Save" value="Save" class="btn btn-primary" />
         }
     </div>

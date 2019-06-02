@@ -1,0 +1,28 @@
+﻿@model EfRelationshipsAndGraphs.ViewModels.MoeViewModel
+
+@{
+    ViewBag.Title = "Create MOE";
+}
+
+
+<div class="row">
+    <div class="col-md-6">
+            @Html.LabelFor(m => m.CharterName, new { @class = "control-label" })
+            @Html.EditorFor(m => m.CharterName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            @Html.LabelFor(m => m.MoeName, new { @class = "control-label" })
+            @Html.EditorFor(m => m.MoeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            @Html.LabelFor(m => m.Expenditure.Name, new { @class = "control-label" })
+            @Html.EditorFor(m => m.Expenditure.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            @Html.LabelFor(m => m.DirectSupport.Name, new { @class = "control-label" })
+            @Html.EditorFor(m => m.DirectSupport.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            @Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
+            @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+            <hr />
+            @Html.ActionLink("Back", "Index", "Moe", null, new { @class = "btn btn-default" })
+    </div>
+</div>

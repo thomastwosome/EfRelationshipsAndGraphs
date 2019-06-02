@@ -6,6 +6,7 @@ namespace EfRelationshipsAndGraphs.ViewModels
     {
         public int MoeId { get; set; }
 
+        [Display(Name = "Direct Support")]
         public string Name { get; set; }
     }
 }
