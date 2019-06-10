@@ -17,6 +17,8 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.ExpenditureName, op => op.Ignore())
                 .ForMember(d => d.DirectSupportId, op => op.Ignore())
                 .ForMember(d => d.DirectSupportName, op => op.Ignore())
+                .ForMember(d => d.Expenditure, op => op.Ignore())
+                .ForMember(d => d.DirectSupport, op => op.Ignore())
             ;
 
             Mapper.CreateMap<Moe, MoeViewModel>()
@@ -35,6 +37,8 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.CharterName, op => op.Ignore())
                 .ForMember(d => d.DirectSupportId, op => op.Ignore())
                 .ForMember(d => d.DirectSupportName, op => op.Ignore())
+                .ForMember(d => d.Expenditure, op => op.Ignore())
+                .ForMember(d => d.DirectSupport, op => op.Ignore())
                 ;
             Mapper.CreateMap<DirectSupport, MoeViewModel>()
                 .ForMember(d => d.MoeId, op => op.Ignore())
@@ -45,14 +49,16 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.CharterName, op => op.Ignore())
                 .ForMember(d => d.ExpenditureId, op => op.Ignore())
                 .ForMember(d => d.ExpenditureName, op => op.Ignore())
+                .ForMember(d => d.Expenditure, op => op.Ignore())
+                .ForMember(d => d.DirectSupport, op => op.Ignore())
                 ;
-            Mapper.CreateMap<MoeViewModel, Moe>()
+            Mapper.CreateMap<MoeViewModel, Moe>() //moe = model.ToEntity()
                 .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.MoeName, op => op.MapFrom(s => s.MoeName))
                 .ForMember(d => d.CharterId, op => op.MapFrom(s => s.CharterId))
                 .ForMember(d => d.Charter, op => op.Ignore())
-                .ForMember(d => d.Expenditure, op => op.Ignore())
-                .ForMember(d => d.DirectSupport, op => op.Ignore())
+                .ForMember(d => d.Expenditure, op => op.MapFrom(s => s.Expenditure))
+                .ForMember(d => d.DirectSupport, op => op.MapFrom(s => s.DirectSupport))
             ;
 
             Mapper.CreateMap<MoeViewModel, Expenditure>()

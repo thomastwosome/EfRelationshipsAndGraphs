@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using EfRelationshipsAndGraphs.Core.Domain;
 
 namespace EfRelationshipsAndGraphs.ViewModels
 {
@@ -28,5 +29,10 @@ namespace EfRelationshipsAndGraphs.ViewModels
 
         [Display(Name = "Direct Support")]
         public string DirectSupportName { get; set; }
+
+        public virtual Expenditure Expenditure { get; set; }
+        public virtual DirectSupport DirectSupport { get; set; }
+
+
     }
 }

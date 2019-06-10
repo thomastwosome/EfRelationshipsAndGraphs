@@ -101,30 +101,21 @@ namespace EfRelationshipsAndGraphs.Controllers
 
             if (moe == null) //Create
             {
-                moe = new Moe
-                {
-                    MoeName = model.MoeName,
-                    CharterId = model.CharterId,
-                };
+                moe = model.ToEntity();
                 if (model.ExpenditureName != null)
                 {
-                    moe.Expenditure = new Expenditure
-                    {
-                        ExpenditureName = model.ExpenditureName
-                    };
+                    moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
                 }
                 if (model.DirectSupportName != null)
                 {
-                    moe.DirectSupport = new DirectSupport
-                    {
-                        DirectSupportName = model.DirectSupportName
-                    };
+                    moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
                 }
                 _db.Moes.Add(moe);
             }
             else //Update
             {
                 moe.MoeName = model.MoeName;
+                //moe = model.ToEntity(); Why doesn't this work?
 
                 #region Expenditure
 
@@ -134,19 +125,9 @@ namespace EfRelationshipsAndGraphs.Controllers
                     _db.Expenditures.Remove(expenditure);
                 }
 
-                if (model.ExpenditureName != null)
+                if (model.ExpenditureName != null) //Create/Edit
                 {
-                    if (moe.Expenditure == null) //Create
-                    {
-                        moe.Expenditure = new Expenditure
-                        {
-                            ExpenditureName = model.ExpenditureName
-                        };
-                    }
-                    else //Edit
-                    {
-                        moe.Expenditure.ExpenditureName = model.ExpenditureName;
-                    }
+                    moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
                 }
 
                 #endregion
@@ -159,19 +140,9 @@ namespace EfRelationshipsAndGraphs.Controllers
                     _db.DirectSupports.Remove(directSupport);
                 }
 
-                if (model.DirectSupportName != null)
+                if (model.DirectSupportName != null) //Create/Edit
                 {
-                    if (moe.DirectSupport == null) //Create
-                    {
-                        moe.DirectSupport = new DirectSupport
-                        {
-                            DirectSupportName = model.DirectSupportName
-                        };
-                    }
-                    else //Edit
-                    {
-                        moe.DirectSupport.DirectSupportName = model.DirectSupportName;
-                    }
+                    moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
                 }
 
                 #endregion
