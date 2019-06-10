@@ -5,12 +5,6 @@
 @Html.ValidationSummary(false, "", new { @class = "text-danger" })
 @Html.HiddenFor(m => m.CharterId)
 @Html.HiddenFor(m => m.MoeId)
-@*@if (Model.MoeId > 0)
-        {
-            @Html.HiddenFor(m => m.Expenditure.MoeId)
-            @Html.HiddenFor(m => m.DirectSupport.MoeId)
-            @Html.HiddenFor(m => m.Exemption.MoeId)
-    }*@
 
 @Html.LabelFor(m => m.CharterName, new { @class = "control-label" })
 @Html.EditorFor(m => m.CharterName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
@@ -23,11 +17,11 @@
 @Html.EditorFor(m => m.ExpenditureName, new { htmlAttributes = new { @class = "form-control" } })
 @Html.ValidationMessageFor(m => m.ExpenditureName, "", new { @class = "text-danger" })
 
-@*@Html.LabelFor(m => m.DirectSupport.Name, new { @class = "control-label" })
-    @Html.EditorFor(m => m.DirectSupport.Name, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.DirectSupport.Name, "", new { @class = "text-danger" })
+@Html.LabelFor(m => m.DirectSupportName, new { @class = "control-label" })
+@Html.EditorFor(m => m.DirectSupportName, new { htmlAttributes = new { @class = "form-control" } })
+@Html.ValidationMessageFor(m => m.DirectSupportName, "", new { @class = "text-danger" })
 
-    @Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
+@*@Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
     @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control" } })
     @Html.ValidationMessageFor(m => m.Exemption.Name, "", new { @class = "text-danger" })
 
@@ -57,16 +51,16 @@
         </table>*@
 
 <script>
-    function markAsChanged(event) {
+    function markAsChanged() {
         var changedRow = $(this).parents("tr.existing-row");
-        if (changedRow.hasClass("has-changed") == false) {
+        if (changedRow.hasClass("has-changed") === false) {
             changedRow.removeClass("new-row").addClass("has-changed");
         }
     }
 
-    function deleteExpenditure(event) {
+    function deleteExpenditure() {
         var existingRow = $(this).parents("tr.existing-row");
-        if (existingRow.length == 0) {
+        if (existingRow.length === 0) {
             return;
         }
 
@@ -82,7 +76,7 @@
                 }
             })
             .done(function (data) {
-                if (data.success == true) {
+                if (data.success === true) {
                     $("#CostlyExpenditures > tbody").html("");
                     $("#CostlyExpenditures > tbody").html(data.partial);
 
@@ -97,9 +91,9 @@
         });
     }
 
-    function updateExpenditures(event) {
+    function updateExpenditures() {
         var changedRows = $("tr.has-changed");
-        if (changedRows.length == 0) {
+        if (changedRows.length === 0) {
             return;
         }
 
@@ -128,7 +122,7 @@
             }
         })
         .done(function (data) {
-            if (data.success == true) {
+            if (data.success === true) {
                 if (typeof (data.partial) != "undefined") {
                     $("#CostlyExpenditures > tbody").html("");
                     $("#CostlyExpenditures > tbody").html(data.partial);

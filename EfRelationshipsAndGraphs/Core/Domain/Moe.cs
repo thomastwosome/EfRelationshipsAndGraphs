@@ -16,7 +16,8 @@
         public Charter Charter { get; set; }
 
         public virtual Expenditure Expenditure { get; set; }
-        //public DirectSupport DirectSupport { get; set; }
+        public virtual DirectSupport DirectSupport { get; set; }
+
         //public Exemption Exemption { get; set; }
     }
 }

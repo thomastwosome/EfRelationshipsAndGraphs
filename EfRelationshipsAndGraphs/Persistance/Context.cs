@@ -1,10 +1,9 @@
-﻿using System.Data.Entity;
-using System.Data.Entity.Core.Common.CommandTrees;
-using System.Security.Claims;
-using System.Threading.Tasks;
+﻿using EfRelationshipsAndGraphs.Core.Domain;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using EfRelationshipsAndGraphs.Core.Domain;
+using System.Data.Entity;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace EfRelationshipsAndGraphs.Persistance
 {
@@ -35,6 +34,7 @@ namespace EfRelationshipsAndGraphs.Persistance
         public virtual DbSet<Charter> Charters { get; set; }
         public virtual DbSet<Moe> Moes { get; set; }
         public virtual DbSet<Expenditure> Expenditures { get; set; }
+        public virtual DbSet<DirectSupport> DirectSupports { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -52,7 +52,12 @@ namespace EfRelationshipsAndGraphs.Persistance
                 .HasOptional(s => s.Expenditure)
                 .WithRequired(x => x.Moe)
                 .WillCascadeOnDelete();
-            
+
+            modelBuilder.Entity<Moe>()
+                .HasOptional(s => s.DirectSupport)
+                .WithRequired(x => x.Moe)
+                .WillCascadeOnDelete();
+
             ////Exemption and it's children
             //modelBuilder.Entity<Exemption>()
             //    .HasMany(x => x.Staffs)

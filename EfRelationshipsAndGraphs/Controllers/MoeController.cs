@@ -25,6 +25,7 @@ namespace EfRelationshipsAndGraphs.Controllers
             var moe = _db.Moes
                 .Include("Charter")
                 .Include("Expenditure")
+                .Include("DirectSupport")
                 .FirstOrDefault(x => x.MoeId == moeId);
 
             var model = new MoeViewModel();
@@ -37,6 +38,10 @@ namespace EfRelationshipsAndGraphs.Controllers
             if (moe.Expenditure != null)
             {
                 model.ExpenditureName = moe.Expenditure.ExpenditureName;
+            }
+            if (moe.DirectSupport != null)
+            {
+                model.DirectSupportName = moe.DirectSupport.DirectSupportName;
             }
 
             return model;
@@ -95,9 +100,10 @@ namespace EfRelationshipsAndGraphs.Controllers
                 return false;
             }
 
-            //Moe moe;
             var moeId = model.MoeId;
-            var moe = _db.Moes.Include("Expenditure").FirstOrDefault(x => x.MoeId == moeId);
+            var moe = _db.Moes.Include("Expenditure")
+                                .Include("DirectSupport")
+                                .FirstOrDefault(x => x.MoeId == moeId);
 
             if (moe == null) //Create
             {
@@ -113,11 +119,20 @@ namespace EfRelationshipsAndGraphs.Controllers
                         ExpenditureName = model.ExpenditureName
                     };
                 }
+                if (model.DirectSupportName != null)
+                {
+                    moe.DirectSupport = new DirectSupport
+                    {
+                        DirectSupportName = model.DirectSupportName
+                    };
+                }
                 _db.Moes.Add(moe);
             }
             else //Update
             {
                 moe.MoeName = model.MoeName;
+
+                #region Expenditure
 
                 if (moe.Expenditure != null && model.ExpenditureName == null) //Delete
                 {
@@ -138,7 +153,34 @@ namespace EfRelationshipsAndGraphs.Controllers
                     {
                         moe.Expenditure.ExpenditureName = model.ExpenditureName;
                     }
-                }  
+                }
+
+                #endregion
+
+                #region DirectSupport
+
+                if (moe.DirectSupport != null && model.DirectSupportName == null) //Delete
+                {
+                    var directSupport = moe.DirectSupport;
+                    _db.DirectSupports.Remove(directSupport);
+                }
+
+                if (model.DirectSupportName != null)
+                {
+                    if (moe.DirectSupport == null) //Create
+                    {
+                        moe.DirectSupport = new DirectSupport
+                        {
+                            DirectSupportName = model.DirectSupportName
+                        };
+                    }
+                    else //Edit
+                    {
+                        moe.DirectSupport.DirectSupportName = model.DirectSupportName;
+                    }
+                }
+
+                #endregion
             }
 
             var entries = _db.ChangeTracker.Entries().ToList();
@@ -158,8 +200,11 @@ namespace EfRelationshipsAndGraphs.Controllers
             if (moe == null)
                 return HttpNotFound();
 
-            var expenditure = _db.Expenditures.FirstOrDefault(x => x.ExpenditureId == moeId);
-            if (expenditure != null) _db.Expenditures.Remove(expenditure);
+            //var expenditure = _db.Expenditures.FirstOrDefault(x => x.ExpenditureId == moeId);
+            //if (expenditure != null) _db.Expenditures.Remove(expenditure);
+
+            //var directSupport = _db.DirectSupports.FirstOrDefault(x => x.DirectSupportId == moeId);
+            //if (directSupport != null) _db.DirectSupports.Remove(directSupport);
 
             _db.Moes.Remove(moe);
             _db.SaveChanges();

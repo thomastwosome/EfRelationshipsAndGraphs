@@ -23,5 +23,10 @@ namespace EfRelationshipsAndGraphs.ViewModels
 
         [Display(Name = "Expenditure")]
         public string ExpenditureName { get; set; }
+
+        public int DirectSupportId { get; set; }
+
+        [Display(Name = "Direct Support")]
+        public string DirectSupportName { get; set; }
     }
 }
