@@ -5,6 +5,7 @@ using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
+using AutoMapper;
 
 namespace EfRelationshipsAndGraphs.Controllers
 {
@@ -28,20 +29,16 @@ namespace EfRelationshipsAndGraphs.Controllers
                 .Include("DirectSupport")
                 .FirstOrDefault(x => x.MoeId == moeId);
 
-            var model = new MoeViewModel();
-            if (moe == null) return model;
-
-            model.CharterName = moe.Charter.CharterName;
-            model.MoeId = moe.MoeId;
-            model.MoeName = moe.MoeName;
+            var model = Mapper.Map<Moe, MoeViewModel>(moe);
 
             if (moe.Expenditure != null)
             {
-                model.ExpenditureName = moe.Expenditure.ExpenditureName;
+                Mapper.Map<Expenditure, MoeViewModel>(moe.Expenditure);
             }
             if (moe.DirectSupport != null)
             {
-                model.DirectSupportName = moe.DirectSupport.DirectSupportName;
+                Mapper.Map<DirectSupport, MoeViewModel>(moe.DirectSupport);
+
             }
 
             return model;
@@ -50,11 +47,7 @@ namespace EfRelationshipsAndGraphs.Controllers
         public ActionResult Create(int charterId = 1)
         {
             var charter = _db.Charters.Find(charterId);
-            var model = new MoeViewModel
-            {
-                CharterId = charterId,
-                CharterName = charter?.CharterName,
-            };
+            var model = charter.ToModel();
 
             return View(model);
         }
@@ -199,12 +192,6 @@ namespace EfRelationshipsAndGraphs.Controllers
             var moe = _db.Moes.Find(moeId);
             if (moe == null)
                 return HttpNotFound();
-
-            //var expenditure = _db.Expenditures.FirstOrDefault(x => x.ExpenditureId == moeId);
-            //if (expenditure != null) _db.Expenditures.Remove(expenditure);
-
-            //var directSupport = _db.DirectSupports.FirstOrDefault(x => x.DirectSupportId == moeId);
-            //if (directSupport != null) _db.DirectSupports.Remove(directSupport);
 
             _db.Moes.Remove(moe);
             _db.SaveChanges();
