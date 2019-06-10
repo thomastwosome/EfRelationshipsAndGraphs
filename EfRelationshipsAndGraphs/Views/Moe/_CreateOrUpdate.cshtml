@@ -1,0 +1,158 @@
+﻿@model EfRelationshipsAndGraphs.ViewModels.MoeViewModel
+
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@Html.HiddenFor(m => m.CharterId)
+@Html.HiddenFor(m => m.MoeId)
+@*@if (Model.MoeId > 0)
+        {
+            @Html.HiddenFor(m => m.Expenditure.MoeId)
+            @Html.HiddenFor(m => m.DirectSupport.MoeId)
+            @Html.HiddenFor(m => m.Exemption.MoeId)
+    }*@
+
+@Html.LabelFor(m => m.CharterName, new { @class = "control-label" })
+@Html.EditorFor(m => m.CharterName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+
+@Html.LabelFor(m => m.MoeName, new { @class = "control-label" })
+@Html.EditorFor(m => m.MoeName, new { htmlAttributes = new { @class = "form-control" } })
+@Html.ValidationMessageFor(m => m.MoeName, "", new { @class = "text-danger" })
+
+@Html.LabelFor(m => m.ExpenditureName, new { @class = "control-label" })
+@Html.EditorFor(m => m.ExpenditureName, new { htmlAttributes = new { @class = "form-control" } })
+@Html.ValidationMessageFor(m => m.ExpenditureName, "", new { @class = "text-danger" })
+
+@*@Html.LabelFor(m => m.DirectSupport.Name, new { @class = "control-label" })
+    @Html.EditorFor(m => m.DirectSupport.Name, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.DirectSupport.Name, "", new { @class = "text-danger" })
+
+    @Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
+    @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control" } })
+    @Html.ValidationMessageFor(m => m.Exemption.Name, "", new { @class = "text-danger" })
+
+       <table id="CostlyExpenditures" class="table table-bordered" style="margin-bottom:0px;">
+            <thead>
+                <tr>
+                    <td colspan="3">
+                        <p><strong>4. The termination of costly expenditures for long-term purchases, such as the acquisition of equipment or the construction of school facilities (must have per unit cost of $5,000 or more).</strong></p>
+                    </td>
+                </tr>
+                <tr class="header-row">
+                    <th>Description of Expenditure<span class="text-danger"> *</span></th>
+                    <th width="13%">Total<span class="text-danger"> *</span></th>
+                    <th width="8%">Action<span class="text-danger"> *</span></th>
+                </tr>
+            </thead>
+            <tbody>
+                @Html.Partial("_CostlyExpenditure", Model.Exemption.CostlyExpenditures)
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="text-right midAligned"><strong><em>4. Total Termination of Costly Expenditures</em></strong></td>
+                    <td>@Html.EditorFor(m => m.Exemption.CostlyExpendituresTotal, new { htmlAttributes = new { @class = "form-control calculation", @readonly = "readonly" } })</td>
+                    <td></td>
+                </tr>
+            </tfoot>
+        </table>*@
+
+<script>
+    function markAsChanged(event) {
+        var changedRow = $(this).parents("tr.existing-row");
+        if (changedRow.hasClass("has-changed") == false) {
+            changedRow.removeClass("new-row").addClass("has-changed");
+        }
+    }
+
+    function deleteExpenditure(event) {
+        var existingRow = $(this).parents("tr.existing-row");
+        if (existingRow.length == 0) {
+            return;
+        }
+
+        confirm(null, "Are you sure you want to delete " + $(existingRow).find("input[name$='Description']").val() + "?", function () {
+            $.ajax(
+            {
+                url: '/Fiscal/Moe/DeleteExpenditure',
+                type: 'POST',
+                datatype: 'json',
+                data:
+                {
+                    id: $(existingRow).find("input[name$='Id']").val(),
+                }
+            })
+            .done(function (data) {
+                if (data.success == true) {
+                    $("#CostlyExpenditures > tbody").html("");
+                    $("#CostlyExpenditures > tbody").html(data.partial);
+
+                    doTheMoeMath();
+                }
+                else {
+                    notify(data.message);
+                }
+                reset();
+            })
+            .fail(function (jXHR, result, textStatus) { notify("Communication failure in 'deleteExpenditure': " + textStatus); });
+        });
+    }
+
+    function updateExpenditures(event) {
+        var changedRows = $("tr.has-changed");
+        if (changedRows.length == 0) {
+            return;
+        }
+
+        var submitData = [];
+        for (var i = 0; i < changedRows.length; i++) {
+            var row = changedRows[i];
+            var data = {
+                ExemptionId: $('#ExemptionId').val(),
+                Id: $(row).find("input[name$='Id']").val(),
+                Description: $(row).find("input[name$='Description']").val(),
+                Total: $(row).find("input[name$='Total']").val(),
+            };
+            submitData.push(data);
+        }
+
+        $.ajax(
+        {
+            url: '/Fiscal/Moe/UpdateExpenditures',
+            type: 'POST',
+            datatype: 'json',
+            data:
+            {
+                list: submitData,
+                moeId: $('#Id').val(),
+                charterId: $('#CharterId').val(),
+            }
+        })
+        .done(function (data) {
+            if (data.success == true) {
+                if (typeof (data.partial) != "undefined") {
+                    $("#CostlyExpenditures > tbody").html("");
+                    $("#CostlyExpenditures > tbody").html(data.partial);
+
+                    doTheMoeMath();
+                }
+            }
+            else {
+                notify(data.message);
+            }
+            reset();
+        })
+        .fail(function (jXHR, result, textStatus) { notify("Communication failure in 'updateStudents': " + textStatus); });
+    }
+
+    function reset() {
+        $('tr.existing-row input').off('input paste', markAsChanged);
+        $('tr.existing-row input').on('input paste', markAsChanged);
+
+        //Costly Expenditures
+        $('tr.existing-row span.costlyexp-row-delete').off('click', deleteExpenditure);
+        $('tr.existing-row span.costlyexp-row-delete').on('click', deleteExpenditure);
+
+        $('#Save, #Submit, #CostlyExpAddRow').off('click', updateExpenditures);
+        $('#Save, #Submit, #CostlyExpAddRow').on('click', updateExpenditures);
+    }
+</script>

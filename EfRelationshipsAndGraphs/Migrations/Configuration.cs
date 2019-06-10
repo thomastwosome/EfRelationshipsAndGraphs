@@ -1,11 +1,8 @@
 namespace EfRelationshipsAndGraphs.Migrations
 {
-    using System;
-    using System.Data.Entity;
     using System.Data.Entity.Migrations;
-    using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<EfRelationshipsAndGraphs.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<Persistance.ApplicationDbContext>
     {
         public Configuration()
         {
@@ -13,7 +10,7 @@ namespace EfRelationshipsAndGraphs.Migrations
             ContextKey = "EfRelationshipsAndGraphs.Models.ApplicationDbContext";
         }
 
-        protected override void Seed(EfRelationshipsAndGraphs.Models.ApplicationDbContext context)
+        protected override void Seed(Persistance.ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

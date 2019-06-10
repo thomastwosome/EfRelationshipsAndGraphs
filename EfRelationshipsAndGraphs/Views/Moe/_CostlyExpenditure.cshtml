@@ -1,0 +1,26 @@
+﻿@model List<EfRelationshipsAndGraphs.ViewModels.CostlyExpenditureViewModel>
+
+@for (var i = 0; i < Model.Count(); i++)
+{
+    var rowClass = "existing-row" + ((i == 0) ? " new-row" : "");
+
+    <tr class="@rowClass">
+        <td>
+            @Html.HiddenFor(m => m[i].CostlyExpenditureId)
+            @Html.EditorFor(m => m[i].Description, new { htmlAttributes = new { @class = "form-control litegoldenrod" } })
+        </td>
+        <td>
+            @Html.EditorFor(m => m[i].Total, new { htmlAttributes = new { @class = "form-control litegoldenrod text-right", onChange = "doTheMoeMath();" } })
+        </td>
+        <td style="text-align:center">
+            @if (i == 0)
+            {
+                <span id="CostlyExpAddRow" style="color:green; font-size:26px; cursor:pointer" title="Add this row">&plus;</span>
+            }
+            else
+            {
+                <span class="costlyexp-row-delete" style="color:red; font-size:26px; cursor:pointer" title="Delete this row">&times;</span>
+            }
+        </td>
+    </tr>
+}

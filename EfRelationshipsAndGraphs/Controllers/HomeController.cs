@@ -1,5 +1,6 @@
-﻿using EfRelationshipsAndGraphs.Models;
-using System;
+﻿using EfRelationshipsAndGraphs.Core.Domain;
+using EfRelationshipsAndGraphs.Persistance;
+using EfRelationshipsAndGraphs.ViewModels;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace EfRelationshipsAndGraphs.Controllers
                     return HttpNotFound();
 
 
-                var model = new IndexViewModel
+                var model = new MyIndexViewModel
                 {
                     ParentId = parent.Id,
                     ParentFirstName = parent.FirstName,
@@ -43,7 +44,7 @@ namespace EfRelationshipsAndGraphs.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Index(IndexViewModel model)
+        public ActionResult Index(MyIndexViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 

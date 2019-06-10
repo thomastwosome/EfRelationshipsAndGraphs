@@ -19,7 +19,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (var moe in Model)
+                @foreach (var moe in Model.ToList())
                 {
                     <tr>
                         <td>@Html.DisplayFor(model => moe.CharterName)</td>

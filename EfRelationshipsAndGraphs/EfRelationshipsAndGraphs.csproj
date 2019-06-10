@@ -44,14 +44,39 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=4.0.4.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.4.0.4\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.1.134\lib\net40\StructureMap.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Net4, Version=3.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.3.1.1.134\lib\net40\StructureMap.Net4.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="StructureMap.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\structuremap.web.3.1.0.133\lib\net40\StructureMap.Web.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -101,6 +126,10 @@
     <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <Private>True</Private>
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+    </Reference>
+    <Reference Include="WebActivatorEx, Version=2.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebActivatorEx.2.0.5\lib\net40\WebActivatorEx.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -162,18 +191,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="App_Start\AutomapperConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
+    <Compile Include="App_Start\MappingProfile.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\StructuremapMvc.cs" />
+    <Compile Include="CommonHelpers.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MoeController.cs" />
+    <Compile Include="Controllers\ProjectionController.cs" />
+    <Compile Include="DependencyResolution\ControllerConvention.cs" />
+    <Compile Include="DependencyResolution\DefaultRegistry.cs" />
+    <Compile Include="DependencyResolution\IoC.cs" />
+    <Compile Include="DependencyResolution\StructureMapDependencyScope.cs" />
+    <Compile Include="DependencyResolution\StructureMapScopeModule.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="MappingExtensions.cs" />
     <Compile Include="Migrations\201905291901436_InitialCreate.cs" />
     <Compile Include="Migrations\201905291901436_InitialCreate.Designer.cs">
       <DependentUpon>201905291901436_InitialCreate.cs</DependentUpon>
@@ -218,24 +258,85 @@
     <Compile Include="Migrations\201906022128012_10.Designer.cs">
       <DependentUpon>201906022128012_10.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906031941123_11.cs" />
+    <Compile Include="Migrations\201906031941123_11.Designer.cs">
+      <DependentUpon>201906031941123_11.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906032120527_12.cs" />
+    <Compile Include="Migrations\201906032120527_12.Designer.cs">
+      <DependentUpon>201906032120527_12.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906052117354_13.cs" />
+    <Compile Include="Migrations\201906052117354_13.Designer.cs">
+      <DependentUpon>201906052117354_13.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906052326578_14.cs" />
+    <Compile Include="Migrations\201906052326578_14.Designer.cs">
+      <DependentUpon>201906052326578_14.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906072042132_15.cs" />
+    <Compile Include="Migrations\201906072042132_15.Designer.cs">
+      <DependentUpon>201906072042132_15.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906072055427_16.cs" />
+    <Compile Include="Migrations\201906072055427_16.Designer.cs">
+      <DependentUpon>201906072055427_16.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906101748479_17.cs" />
+    <Compile Include="Migrations\201906101748479_17.Designer.cs">
+      <DependentUpon>201906101748479_17.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906101815575_18.cs" />
+    <Compile Include="Migrations\201906101815575_18.Designer.cs">
+      <DependentUpon>201906101815575_18.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102014171_19.cs" />
+    <Compile Include="Migrations\201906102014171_19.Designer.cs">
+      <DependentUpon>201906102014171_19.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102025437_20.cs" />
+    <Compile Include="Migrations\201906102025437_20.Designer.cs">
+      <DependentUpon>201906102025437_20.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102037292_21.cs" />
+    <Compile Include="Migrations\201906102037292_21.Designer.cs">
+      <DependentUpon>201906102037292_21.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102044037_22.cs" />
+    <Compile Include="Migrations\201906102044037_22.Designer.cs">
+      <DependentUpon>201906102044037_22.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201906102051270_23.cs" />
+    <Compile Include="Migrations\201906102051270_23.Designer.cs">
+      <DependentUpon>201906102051270_23.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\CostlyExpenditure.cs" />
-    <Compile Include="Models\Student.cs" />
-    <Compile Include="Models\Staff.cs" />
-    <Compile Include="Models\Exemption.cs" />
-    <Compile Include="Models\DirectSupport.cs" />
-    <Compile Include="Models\Expenditure.cs" />
-    <Compile Include="Models\Moe.cs" />
-    <Compile Include="Models\Charter.cs" />
-    <Compile Include="Models\Child.cs" />
-    <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\IParentRepository.cs" />
-    <Compile Include="Models\ManageViewModels.cs" />
-    <Compile Include="Models\Parent.cs" />
-    <Compile Include="Models\Pet.cs" />
+    <Compile Include="ViewModels\AccountViewModels.cs" />
+    <Compile Include="Core\Domain\CalendarEvent.cs" />
+    <Compile Include="Core\Domain\CostlyExpenditure.cs" />
+    <Compile Include="Persistance\Repositories\MoeRepository.cs" />
+    <Compile Include="Core\Repositories\IMoeRepository.cs" />
+    <Compile Include="Core\Repositories\IRepository.cs" />
+    <Compile Include="Core\IUnitOfWork.cs" />
+    <Compile Include="Persistance\Repositories\Repository.cs" />
+    <Compile Include="Core\Domain\Student.cs" />
+    <Compile Include="Core\Domain\Staff.cs" />
+    <Compile Include="Core\Domain\Exemption.cs" />
+    <Compile Include="Core\Domain\DirectSupport.cs" />
+    <Compile Include="Core\Domain\Expenditure.cs" />
+    <Compile Include="Core\Domain\Moe.cs" />
+    <Compile Include="Core\Domain\Charter.cs" />
+    <Compile Include="Core\Domain\Child.cs" />
+    <Compile Include="Persistance\Context.cs" />
+    <Compile Include="Core\Repositories\IParentRepository.cs" />
+    <Compile Include="ViewModels\ManageViewModels.cs" />
+    <Compile Include="Core\Domain\Parent.cs" />
+    <Compile Include="Core\Domain\Pet.cs" />
+    <Compile Include="Persistance\UnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\CalendarEventForm.cs" />
+    <Compile Include="ViewModels\CostlyExpenditureViewModel.cs" />
     <Compile Include="ViewModels\ExemptionViewModel.cs" />
     <Compile Include="ViewModels\DirectSupportViewModel.cs" />
     <Compile Include="ViewModels\ExpenditureViewModel.cs" />
@@ -253,6 +354,8 @@
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\confirm.js" />
+    <Content Include="Scripts\notify.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
     <None Include="Scripts\jquery.validate-vsdoc.js" />
@@ -303,9 +406,13 @@
     <Content Include="Views\Moe\Update.cshtml" />
     <Content Include="Views\Moe\Index.cshtml" />
     <Content Include="Views\Moe\Read.cshtml" />
+    <Content Include="Views\Moe\_CostlyExpenditure.cshtml" />
+    <Content Include="Views\Moe\_CreateOrUpdate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Persistance\EntityConfigurations\" />
+    <Folder Include="Views\Projection\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -348,6 +455,45 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906022128012_10.resx">
       <DependentUpon>201906022128012_10.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906031941123_11.resx">
+      <DependentUpon>201906031941123_11.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906032120527_12.resx">
+      <DependentUpon>201906032120527_12.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906052117354_13.resx">
+      <DependentUpon>201906052117354_13.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906052326578_14.resx">
+      <DependentUpon>201906052326578_14.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906072042132_15.resx">
+      <DependentUpon>201906072042132_15.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906072055427_16.resx">
+      <DependentUpon>201906072055427_16.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906101748479_17.resx">
+      <DependentUpon>201906101748479_17.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906101815575_18.resx">
+      <DependentUpon>201906101815575_18.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102014171_19.resx">
+      <DependentUpon>201906102014171_19.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102025437_20.resx">
+      <DependentUpon>201906102025437_20.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102037292_21.resx">
+      <DependentUpon>201906102037292_21.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102044037_22.resx">
+      <DependentUpon>201906102044037_22.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906102051270_23.resx">
+      <DependentUpon>201906102051270_23.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

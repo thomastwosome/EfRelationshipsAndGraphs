@@ -4,10 +4,10 @@ namespace EfRelationshipsAndGraphs.ViewModels
 {
     public class ExpenditureViewModel
     {
-        public int MoeId { get; set; }
+        public int ExpenditureId { get; set; }
 
-        [Required]
-        [Display(Name = "Exemption")]
-        public string Name { get; set; }
+        //[Required]
+        [Display(Name = "Expenditure")]
+        public string ExpenditureName { get; set; }
     }
 }

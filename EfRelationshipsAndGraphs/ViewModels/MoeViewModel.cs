@@ -10,15 +10,18 @@ namespace EfRelationshipsAndGraphs.ViewModels
         [Display(Name = "MOE Name")]
         public string MoeName { get; set; }
 
+        public string ActualOrBudget { get; set; }
+
+        public int RelatedMoeId { get; set; }
 
         public int CharterId { get; set; }
 
         [Display(Name = "Charter")]
         public string CharterName { get; set; }
 
-        public ExpenditureViewModel Expenditure { get; set; }
-        public DirectSupportViewModel DirectSupport { get; set; }
-        public ExemptionViewModel Exemption { get; set; }
+        public int ExpenditureId { get; set; }
 
+        [Display(Name = "Expenditure")]
+        public string ExpenditureName { get; set; }
     }
 }

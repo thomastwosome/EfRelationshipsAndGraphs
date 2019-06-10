@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-
-namespace EfRelationshipsAndGraphs.ViewModels
+﻿namespace EfRelationshipsAndGraphs.ViewModels
 {
-    public class IndexViewModel
+    public class MyIndexViewModel
     {
         public int ParentId { get; set; }
         public string ParentFirstName { get; set; }

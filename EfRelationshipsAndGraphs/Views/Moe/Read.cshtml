@@ -13,16 +13,17 @@
             @Html.LabelFor(m => m.MoeName, new { @class = "control-label" })
             @Html.EditorFor(m => m.MoeName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-            @Html.LabelFor(m => m.Expenditure.Name, new { @class = "control-label" })
-            @Html.EditorFor(m => m.Expenditure.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.LabelFor(m => m.ExpenditureName, new { @class = "control-label" })
+            @Html.EditorFor(m => m.ExpenditureName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
-            @Html.LabelFor(m => m.DirectSupport.Name, new { @class = "control-label" })
+            @*@Html.LabelFor(m => m.DirectSupport.Name, new { @class = "control-label" })
             @Html.EditorFor(m => m.DirectSupport.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
 
             @Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
-            @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })*@
 
             <hr />
             @Html.ActionLink("Back", "Index", "Moe", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Edit", "Update", "Moe", new { moeId = Model.MoeId }, new { @class = "btn btn-default" })
     </div>
 </div>
