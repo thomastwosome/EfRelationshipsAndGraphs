@@ -29,18 +29,7 @@ namespace EfRelationshipsAndGraphs.Controllers
                 .Include("DirectSupport")
                 .FirstOrDefault(x => x.MoeId == moeId);
 
-            //var model = Mapper.Map<Moe, MoeViewModel>(moe);
             var model = moe.ToModel();
-
-            //if (moe.Expenditure != null)
-            //{
-            //    Mapper.Map<Expenditure, MoeViewModel>(moe.Expenditure);
-            //}
-            //if (moe.DirectSupport != null)
-            //{
-            //    Mapper.Map<DirectSupport, MoeViewModel>(moe.DirectSupport);
-
-            //}
 
             return model;
         }
@@ -102,14 +91,14 @@ namespace EfRelationshipsAndGraphs.Controllers
             if (moe == null) //Create
             {
                 moe = model.ToEntity();
-                if (model.ExpenditureName != null)
-                {
-                    moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
-                }
-                if (model.DirectSupportName != null)
-                {
-                    moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
-                }
+                //if (model.ExpenditureName != null)
+                //{
+                //    moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
+                //}
+                //if (model.DirectSupportName != null)
+                //{
+                //    moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
+                //}
                 _db.Moes.Add(moe);
             }
             else //Update
