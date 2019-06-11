@@ -4,7 +4,7 @@
     {
         public int MoeId { get; set; }
 
-        public string MoeName { get; set; }
+        public string Name { get; set; }
 
         public string ActualOrBudget { get; set; }
 

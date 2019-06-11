@@ -4,7 +4,7 @@
     {
         public int DirectSupportId { get; set; }
 
-        public string DirectSupportName { get; set; }
+        public string Name { get; set; }
 
         public virtual Moe Moe { get; set; }
     }

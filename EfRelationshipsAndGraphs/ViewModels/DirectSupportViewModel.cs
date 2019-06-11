@@ -7,6 +7,6 @@ namespace EfRelationshipsAndGraphs.ViewModels
         public int DirectSupportId { get; set; }
 
         [Display(Name = "Direct Support")]
-        public string DirectSupportName { get; set; }
+        public string Name { get; set; }
     }
 }

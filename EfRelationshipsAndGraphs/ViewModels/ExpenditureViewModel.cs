@@ -7,6 +7,6 @@ namespace EfRelationshipsAndGraphs.ViewModels
         public int ExpenditureId { get; set; }
 
         [Display(Name = "Expenditure")]
-        public string ExpenditureName { get; set; }
+        public string Name { get; set; }
     }
 }

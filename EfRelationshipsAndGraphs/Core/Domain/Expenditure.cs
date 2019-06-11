@@ -4,7 +4,7 @@
     {
         public int ExpenditureId { get; set; }
 
-        public string ExpenditureName { get; set; }
+        public string Name { get; set; }
 
         public virtual Moe Moe { get; set; }
     }

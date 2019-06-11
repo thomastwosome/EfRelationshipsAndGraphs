@@ -15,7 +15,7 @@ namespace EfRelationshipsAndGraphs.Core.Domain
 
         public int ExemptionId { get; set; }
 
-        public string ExemptionName { get; set; }
+        public string Name { get; set; }
 
         //public decimal CostlyExpendituresTotal { get; set; }
 

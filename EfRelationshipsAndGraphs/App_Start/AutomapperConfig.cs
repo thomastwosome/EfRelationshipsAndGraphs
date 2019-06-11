@@ -27,11 +27,11 @@ namespace EfRelationshipsAndGraphs
             Mapper.CreateMap<Moe, MoeViewModel>()
                 .ForMember(d => d.CharterName, op => op.MapFrom(s => s.Charter.CharterName))
                 .ForMember(d => d.ExpenditureId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.ExpenditureName, op => op.MapFrom(s => s.Expenditure.ExpenditureName))
+                .ForMember(d => d.ExpenditureName, op => op.MapFrom(s => s.Expenditure.Name))
                 .ForMember(d => d.DirectSupportId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.DirectSupportName, op => op.MapFrom(s => s.DirectSupport.DirectSupportName))
+                .ForMember(d => d.DirectSupportName, op => op.MapFrom(s => s.DirectSupport.Name))
                 .ForMember(d => d.ExemptionId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.ExemptionName, op => op.MapFrom(s => s.Exemption.ExemptionName))
+                .ForMember(d => d.ExemptionName, op => op.MapFrom(s => s.Exemption.Name))
             ;
 
             Mapper.CreateMap<Expenditure, MoeViewModel>()
@@ -84,7 +84,7 @@ namespace EfRelationshipsAndGraphs
 
             Mapper.CreateMap<MoeViewModel, Moe>() //moe = model.ToEntity()
                 .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.MoeName, op => op.MapFrom(s => s.MoeName))
+                .ForMember(d => d.Name, op => op.MapFrom(s => s.MoeName))
                 .ForMember(d => d.CharterId, op => op.MapFrom(s => s.CharterId))
                 .ForMember(d => d.Charter, op => op.Ignore())
                 .ForMember(d => d.Expenditure, op => op.MapFrom(s => s.Expenditure))
@@ -95,19 +95,19 @@ namespace EfRelationshipsAndGraphs
             Mapper.CreateMap<MoeViewModel, Expenditure>()
                 .ForMember(d => d.Moe, op => op.Ignore())
                 .ForMember(d => d.ExpenditureId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.ExpenditureName, op => op.MapFrom(s => s.ExpenditureName))
+                .ForMember(d => d.Name, op => op.MapFrom(s => s.ExpenditureName))
             ;
 
             Mapper.CreateMap<MoeViewModel, DirectSupport>()
                 .ForMember(d => d.Moe, op => op.Ignore())
                 .ForMember(d => d.DirectSupportId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.DirectSupportName, op => op.MapFrom(s => s.DirectSupportName))
+                .ForMember(d => d.Name, op => op.MapFrom(s => s.DirectSupportName))
                 ;
 
             Mapper.CreateMap<MoeViewModel, Exemption>()
                 .ForMember(d => d.Moe, op => op.Ignore())
                 .ForMember(d => d.ExemptionId, op => op.MapFrom(s => s.MoeId))
-                .ForMember(d => d.ExemptionName, op => op.MapFrom(s => s.ExemptionName))
+                .ForMember(d => d.Name, op => op.MapFrom(s => s.ExemptionName))
                 ;
 
             //Mapper.CreateMap<Exemption, ExemptionViewModel>();

@@ -97,7 +97,7 @@ namespace EfRelationshipsAndGraphs.Controllers
             }
             else //Update
             {
-                moe.MoeName = model.MoeName;
+                moe.Name = model.MoeName;
                 //moe = model.ToEntity(); //Why doesn't this work?
 
                 //Add/Edits
