@@ -33,6 +33,11 @@ namespace EfRelationshipsAndGraphs.ViewModels
 
         public virtual DirectSupport DirectSupport { get; set; }
 
+        public int ExemptionId { get; set; }
 
+        [Display(Name = "One-Time Exemption")]
+        public string ExemptionName { get; set; }
+
+        public virtual Exemption Exemption { get; set; }
     }
 }

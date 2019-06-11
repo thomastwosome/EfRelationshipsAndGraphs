@@ -27,6 +27,7 @@ namespace EfRelationshipsAndGraphs.Controllers
                 .Include("Charter")
                 .Include("Expenditure")
                 .Include("DirectSupport")
+                .Include("Exemption")
                 .FirstOrDefault(x => x.MoeId == moeId);
 
             var model = moe.ToModel();
@@ -85,7 +86,8 @@ namespace EfRelationshipsAndGraphs.Controllers
 
             var moeId = model.MoeId;
             var moe = _db.Moes.Include("Expenditure")
-                                .Include("DirectSupport")
+                .Include("DirectSupport")
+                .Include("Exemption")
                                 .FirstOrDefault(x => x.MoeId == moeId);
 
             if (moe == null) //Create
@@ -96,17 +98,17 @@ namespace EfRelationshipsAndGraphs.Controllers
             else //Update
             {
                 moe.MoeName = model.MoeName;
-                //moe = model.ToEntity(); Why doesn't this work?
+                //moe = model.ToEntity(); //Why doesn't this work?
 
-                if (model.ExpenditureName != null) //Create/Edit
-                {
+                //Add/Edits
+                if (model.ExpenditureName != null)
                     moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
-                }
 
-                if (model.DirectSupportName != null) //Create/Edit
-                {
+                if (model.DirectSupportName != null)
                     moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
-                }
+
+                if (model.ExemptionName != null)
+                    moe.Exemption = Mapper.Map<MoeViewModel, Exemption>(model);
 
                 //Deletions
                 if (model.ExpenditureName == null)
@@ -119,7 +121,11 @@ namespace EfRelationshipsAndGraphs.Controllers
                     var directSupport = moe.DirectSupport;
                     if (directSupport != null) _db.DirectSupports.Remove(directSupport);
                 }
-
+                if (model.ExemptionName == null)
+                {
+                    var exemption = moe.Exemption;
+                    if (exemption != null) _db.Exemptions.Remove(exemption);
+                }
             }
 
             var entries = _db.ChangeTracker.Entries().ToList();

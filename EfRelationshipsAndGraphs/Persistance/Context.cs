@@ -35,6 +35,7 @@ namespace EfRelationshipsAndGraphs.Persistance
         public virtual DbSet<Moe> Moes { get; set; }
         public virtual DbSet<Expenditure> Expenditures { get; set; }
         public virtual DbSet<DirectSupport> DirectSupports { get; set; }
+        public virtual DbSet<Exemption> Exemptions { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -55,6 +56,11 @@ namespace EfRelationshipsAndGraphs.Persistance
 
             modelBuilder.Entity<Moe>()
                 .HasOptional(s => s.DirectSupport)
+                .WithRequired(x => x.Moe)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Moe>()
+                .HasOptional(s => s.Exemption)
                 .WithRequired(x => x.Moe)
                 .WillCascadeOnDelete();
 

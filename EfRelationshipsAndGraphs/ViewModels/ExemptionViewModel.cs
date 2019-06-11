@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace EfRelationshipsAndGraphs.ViewModels
 {
@@ -10,10 +9,10 @@ namespace EfRelationshipsAndGraphs.ViewModels
         //    CostlyExpenditures = new List<CostlyExpenditureViewModel>();
         //}
 
-        public int MoeId { get; set; }
+        public int ExemptionId { get; set; }
 
-        [Display(Name = "Exemption")]
-        public string Name { get; set; }
+        [Display(Name = "One-Time Exemption")]
+        public string ExemptionName { get; set; }
 
         //public List<CostlyExpenditureViewModel> CostlyExpenditures { get; set; }
         public string CostlyExpendituresTotal { get; set; }

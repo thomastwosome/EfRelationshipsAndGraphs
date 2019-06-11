@@ -17,6 +17,7 @@
 
         public virtual Expenditure Expenditure { get; set; }
         public virtual DirectSupport DirectSupport { get; set; }
+        public virtual Exemption Exemption { get; set; }
 
     }
 }

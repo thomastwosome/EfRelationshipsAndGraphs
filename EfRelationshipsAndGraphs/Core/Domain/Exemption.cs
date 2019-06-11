@@ -13,15 +13,14 @@ namespace EfRelationshipsAndGraphs.Core.Domain
         //    CostlyExpenditures = new HashSet<CostlyExpenditure>();
         //}
 
-        [Key] //, ForeignKey("Moe")
-        public int MoeId { get; set; }
+        public int ExemptionId { get; set; }
 
-        public string Name { get; set; }
+        public string ExemptionName { get; set; }
 
-        public decimal CostlyExpendituresTotal { get; set; }
+        //public decimal CostlyExpendituresTotal { get; set; }
 
         /* Navigational Properties */
-        public Moe Moe { get; set; }
+        public virtual Moe Moe { get; set; }
 
         //public ICollection<Staff> Staffs { get; set; }
         //public ICollection<Student> Students { get; set; }

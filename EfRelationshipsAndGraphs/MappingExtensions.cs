@@ -17,29 +17,32 @@ namespace EfRelationshipsAndGraphs
         public static MoeViewModel ToModel(this Moe entity)
         {
             var model = Mapper.Map<Moe, MoeViewModel>(entity);
+
             if (entity.Expenditure != null)
-            {
                 Mapper.Map<Expenditure, MoeViewModel>(entity.Expenditure);
-            }
+
             if (entity.DirectSupport != null)
-            {
                 Mapper.Map<DirectSupport, MoeViewModel>(entity.DirectSupport);
 
-            }
+            if (entity.Exemption != null)
+                Mapper.Map<Exemption, MoeViewModel>(entity.Exemption);
+
             return model;
         }
 
-        public static Moe ToEntity(this MoeViewModel model)
+        public static Moe ToEntity(this MoeViewModel model) //Only work on CREATE, not UPDATE
         {
             var entity = Mapper.Map<MoeViewModel, Moe>(model);
+
             if (model.ExpenditureName != null)
-            {
                 entity.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
-            }
+
             if (model.DirectSupportName != null)
-            {
                 entity.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
-            }
+
+            if (model.ExemptionName != null)
+                entity.Exemption = Mapper.Map<MoeViewModel, Exemption>(model);
+
             return entity;
         }
 

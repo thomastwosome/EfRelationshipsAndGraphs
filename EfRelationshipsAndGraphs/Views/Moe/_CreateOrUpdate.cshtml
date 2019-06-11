@@ -21,11 +21,11 @@
 @Html.EditorFor(m => m.DirectSupportName, new { htmlAttributes = new { @class = "form-control" } })
 @Html.ValidationMessageFor(m => m.DirectSupportName, "", new { @class = "text-danger" })
 
-@*@Html.LabelFor(m => m.Exemption.Name, new { @class = "control-label" })
-    @Html.EditorFor(m => m.Exemption.Name, new { htmlAttributes = new { @class = "form-control" } })
-    @Html.ValidationMessageFor(m => m.Exemption.Name, "", new { @class = "text-danger" })
+@Html.LabelFor(m => m.ExemptionName, new { @class = "control-label" })
+@Html.EditorFor(m => m.ExemptionName, new { htmlAttributes = new { @class = "form-control" } })
+@Html.ValidationMessageFor(m => m.ExemptionName, "", new { @class = "text-danger" })
 
-       <table id="CostlyExpenditures" class="table table-bordered" style="margin-bottom:0px;">
+@*<table id="CostlyExpenditures" class="table table-bordered" style="margin-bottom:0px;">
             <thead>
                 <tr>
                     <td colspan="3">
@@ -64,7 +64,7 @@
             return;
         }
 
-        confirm(null, "Are you sure you want to delete " + $(existingRow).find("input[name$='Description']").val() + "?", function () {
+        confirm(null, `Are you sure you want to delete ${$(existingRow).find("input[name$='Description']").val()}?`, function () {
             $.ajax(
             {
                 url: '/Fiscal/Moe/DeleteExpenditure',
@@ -72,7 +72,7 @@
                 datatype: 'json',
                 data:
                 {
-                    id: $(existingRow).find("input[name$='Id']").val(),
+                    id: $(existingRow).find("input[name$='Id']").val()
                 }
             })
             .done(function (data) {
@@ -87,7 +87,7 @@
                 }
                 reset();
             })
-            .fail(function (jXHR, result, textStatus) { notify("Communication failure in 'deleteExpenditure': " + textStatus); });
+            .fail(function (jXhr, result, textStatus) { notify(`Communication failure in 'deleteExpenditure': ${textStatus}`); });
         });
     }
 
@@ -104,7 +104,7 @@
                 ExemptionId: $('#ExemptionId').val(),
                 Id: $(row).find("input[name$='Id']").val(),
                 Description: $(row).find("input[name$='Description']").val(),
-                Total: $(row).find("input[name$='Total']").val(),
+                Total: $(row).find("input[name$='Total']").val()
             };
             submitData.push(data);
         }
@@ -118,7 +118,7 @@
             {
                 list: submitData,
                 moeId: $('#Id').val(),
-                charterId: $('#CharterId').val(),
+                charterId: $('#CharterId').val()
             }
         })
         .done(function (data) {
@@ -135,7 +135,7 @@
             }
             reset();
         })
-        .fail(function (jXHR, result, textStatus) { notify("Communication failure in 'updateStudents': " + textStatus); });
+        .fail(function (jXhr, result, textStatus) { notify(`Communication failure in 'updateStudents': ${textStatus}`); });
     }
 
     function reset() {
