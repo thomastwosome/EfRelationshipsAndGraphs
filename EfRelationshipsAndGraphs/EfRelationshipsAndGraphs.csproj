@@ -321,6 +321,10 @@
     <Compile Include="Migrations\201906112309384_28.Designer.cs">
       <DependentUpon>201906112309384_28.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201906112313307_29.cs" />
+    <Compile Include="Migrations\201906112313307_29.Designer.cs">
+      <DependentUpon>201906112313307_29.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ViewModels\AccountViewModels.cs" />
     <Compile Include="Core\Domain\CalendarEvent.cs" />
@@ -514,6 +518,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201906112309384_28.resx">
       <DependentUpon>201906112309384_28.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201906112313307_29.resx">
+      <DependentUpon>201906112313307_29.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

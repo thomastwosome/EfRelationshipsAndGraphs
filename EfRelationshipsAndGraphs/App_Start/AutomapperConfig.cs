@@ -26,6 +26,7 @@ namespace EfRelationshipsAndGraphs
 
             Mapper.CreateMap<Moe, MoeViewModel>()
                 .ForMember(d => d.CharterName, op => op.MapFrom(s => s.Charter.CharterName))
+                .ForMember(d => d.MoeName, op => op.MapFrom(s => s.Name))
                 .ForMember(d => d.ExpenditureId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.ExpenditureName, op => op.MapFrom(s => s.Expenditure.Name))
                 .ForMember(d => d.DirectSupportId, op => op.MapFrom(s => s.MoeId))
@@ -41,6 +42,8 @@ namespace EfRelationshipsAndGraphs
                 .ForMember(d => d.RelatedMoeId, op => op.Ignore())
                 .ForMember(d => d.CharterId, op => op.Ignore())
                 .ForMember(d => d.CharterName, op => op.Ignore())
+                .ForMember(d => d.ExpenditureId, op => op.Ignore())
+                .ForMember(d => d.ExpenditureName, op => op.Ignore())
                 .ForMember(d => d.Expenditure, op => op.Ignore())
                 .ForMember(d => d.DirectSupportId, op => op.Ignore())
                 .ForMember(d => d.DirectSupportName, op => op.Ignore())
@@ -60,6 +63,8 @@ namespace EfRelationshipsAndGraphs
                 .ForMember(d => d.ExpenditureId, op => op.Ignore())
                 .ForMember(d => d.ExpenditureName, op => op.Ignore())
                 .ForMember(d => d.Expenditure, op => op.Ignore())
+                .ForMember(d => d.DirectSupportId, op => op.Ignore())
+                .ForMember(d => d.DirectSupportName, op => op.Ignore())
                 .ForMember(d => d.DirectSupport, op => op.Ignore())
                 .ForMember(d => d.ExemptionId, op => op.Ignore())
                 .ForMember(d => d.ExemptionName, op => op.Ignore())
@@ -79,6 +84,8 @@ namespace EfRelationshipsAndGraphs
                 .ForMember(d => d.DirectSupport, op => op.Ignore())
                 .ForMember(d => d.DirectSupportId, op => op.Ignore())
                 .ForMember(d => d.DirectSupportName, op => op.Ignore())
+                .ForMember(d => d.ExemptionId, op => op.Ignore())
+                .ForMember(d => d.ExemptionName, op => op.Ignore())
                 .ForMember(d => d.Exemption, op => op.Ignore())
                 ;
 
@@ -94,19 +101,19 @@ namespace EfRelationshipsAndGraphs
 
             Mapper.CreateMap<MoeViewModel, Expenditure>()
                 .ForMember(d => d.Moe, op => op.Ignore())
-                .ForMember(d => d.ExpenditureId, op => op.MapFrom(s => s.MoeId))
+                .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.Name, op => op.MapFrom(s => s.ExpenditureName))
             ;
 
             Mapper.CreateMap<MoeViewModel, DirectSupport>()
                 .ForMember(d => d.Moe, op => op.Ignore())
-                .ForMember(d => d.DirectSupportId, op => op.MapFrom(s => s.MoeId))
+                .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.Name, op => op.MapFrom(s => s.DirectSupportName))
                 ;
 
             Mapper.CreateMap<MoeViewModel, Exemption>()
                 .ForMember(d => d.Moe, op => op.Ignore())
-                .ForMember(d => d.ExemptionId, op => op.MapFrom(s => s.MoeId))
+                .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.Name, op => op.MapFrom(s => s.ExemptionName))
                 ;
 

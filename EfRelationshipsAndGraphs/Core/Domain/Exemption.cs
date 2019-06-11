@@ -6,24 +6,25 @@ namespace EfRelationshipsAndGraphs.Core.Domain
 {
     public class Exemption
     {
-        //public Exemption()
-        //{
-        //    Staffs = new HashSet<Staff>();
-        //    Students = new HashSet<Student>();
-        //    CostlyExpenditures = new HashSet<CostlyExpenditure>();
-        //}
+        public Exemption()
+        {
+            Staffs = new HashSet<Staff>();
+            Students = new HashSet<Student>();
+            CostlyExpenditures = new HashSet<CostlyExpenditure>();
+        }
 
-        public int ExemptionId { get; set; }
+        [Key, ForeignKey("Moe")]
+        public int MoeId { get; set; }
 
         public string Name { get; set; }
 
-        //public decimal CostlyExpendituresTotal { get; set; }
+        public decimal CostlyExpendituresTotal { get; set; }
 
         /* Navigational Properties */
         public virtual Moe Moe { get; set; }
 
-        //public ICollection<Staff> Staffs { get; set; }
-        //public ICollection<Student> Students { get; set; }
-        //public ICollection<CostlyExpenditure> CostlyExpenditures { get; set; }
+        public ICollection<Staff> Staffs { get; set; }
+        public ICollection<Student> Students { get; set; }
+        public ICollection<CostlyExpenditure> CostlyExpenditures { get; set; }
     }
 }

@@ -1,8 +1,12 @@
-﻿namespace EfRelationshipsAndGraphs.Core.Domain
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EfRelationshipsAndGraphs.Core.Domain
 {
     public class DirectSupport
     {
-        public int DirectSupportId { get; set; }
+        [Key, ForeignKey("Moe")]
+        public int MoeId { get; set; }
 
         public string Name { get; set; }
 

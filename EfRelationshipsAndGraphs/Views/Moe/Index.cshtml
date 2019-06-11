@@ -28,7 +28,7 @@
                             @Html.ActionLink("View", "Read", "Moe", new { moeId = moe.MoeId }, new { @class = "linkify" })<text> | </text>
                             @Html.ActionLink("Edit", "Update", "Moe", new { moeId = moe.MoeId }, new { @class = "linkify" })<text> | </text>
                             <a href="javascript:void(0);" data-url="@Url.Action("Delete", new {moeId = moe.MoeId})"
-                               data-name="@moe.MoeName" class="delete linkify">Delete</a>
+                               data-name="@moe.MoeName" class="delete">Delete</a>
 
                         </th>
                     </tr>

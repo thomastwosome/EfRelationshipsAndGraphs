@@ -4,7 +4,7 @@ namespace EfRelationshipsAndGraphs.ViewModels
 {
     public class ExpenditureViewModel
     {
-        public int ExpenditureId { get; set; }
+        public int MoeId { get; set; }
 
         [Display(Name = "Expenditure")]
         public string Name { get; set; }

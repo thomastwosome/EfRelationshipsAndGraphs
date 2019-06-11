@@ -4,7 +4,7 @@ namespace EfRelationshipsAndGraphs.ViewModels
 {
     public class DirectSupportViewModel
     {
-        public int DirectSupportId { get; set; }
+        public int MoeId { get; set; }
 
         [Display(Name = "Direct Support")]
         public string Name { get; set; }
