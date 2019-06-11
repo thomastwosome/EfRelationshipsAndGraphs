@@ -91,14 +91,6 @@ namespace EfRelationshipsAndGraphs.Controllers
             if (moe == null) //Create
             {
                 moe = model.ToEntity();
-                //if (model.ExpenditureName != null)
-                //{
-                //    moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
-                //}
-                //if (model.DirectSupportName != null)
-                //{
-                //    moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
-                //}
                 _db.Moes.Add(moe);
             }
             else //Update

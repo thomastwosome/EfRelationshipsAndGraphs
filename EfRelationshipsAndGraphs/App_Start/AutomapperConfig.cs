@@ -2,7 +2,7 @@
 using EfRelationshipsAndGraphs.Core.Domain;
 using EfRelationshipsAndGraphs.ViewModels;
 
-namespace EfRelationshipsAndGraphs.App_Start
+namespace EfRelationshipsAndGraphs
 {
     public static class AutomapperConfig
     {
@@ -27,7 +27,8 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.ExpenditureName, op => op.MapFrom(s => s.Expenditure.ExpenditureName))
                 .ForMember(d => d.DirectSupportId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.DirectSupportName, op => op.MapFrom(s => s.DirectSupport.DirectSupportName))
-                ;
+            ;
+
             Mapper.CreateMap<Expenditure, MoeViewModel>()
                 .ForMember(d => d.MoeId, op => op.Ignore())
                 .ForMember(d => d.MoeName, op => op.Ignore())
@@ -39,7 +40,8 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.DirectSupportName, op => op.Ignore())
                 .ForMember(d => d.Expenditure, op => op.Ignore())
                 .ForMember(d => d.DirectSupport, op => op.Ignore())
-                ;
+            ;
+
             Mapper.CreateMap<DirectSupport, MoeViewModel>()
                 .ForMember(d => d.MoeId, op => op.Ignore())
                 .ForMember(d => d.MoeName, op => op.Ignore())
@@ -51,7 +53,8 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.ExpenditureName, op => op.Ignore())
                 .ForMember(d => d.Expenditure, op => op.Ignore())
                 .ForMember(d => d.DirectSupport, op => op.Ignore())
-                ;
+            ;
+
             Mapper.CreateMap<MoeViewModel, Moe>() //moe = model.ToEntity()
                 .ForMember(d => d.MoeId, op => op.MapFrom(s => s.MoeId))
                 .ForMember(d => d.MoeName, op => op.MapFrom(s => s.MoeName))
@@ -73,22 +76,22 @@ namespace EfRelationshipsAndGraphs.App_Start
                 .ForMember(d => d.DirectSupportName, op => op.MapFrom(s => s.DirectSupportName))
             ;
 
-            Mapper.CreateMap<Exemption, ExemptionViewModel>();
-            //.ForMember(d => d.CostlyExpendituresTotal, op => op.MapFrom(s => decimal.Parse(s.CostlyExpendituresTotal)));
-            Mapper.CreateMap<ExemptionViewModel, Exemption>()
-                .ForMember(d => d.Moe, op => op.Ignore())
-                //.ForMember(d => d.Staffs, op => op.Ignore())
-                //.ForMember(d => d.Students, op => op.Ignore())
-                ;
+            //Mapper.CreateMap<Exemption, ExemptionViewModel>();
+            ////.ForMember(d => d.CostlyExpendituresTotal, op => op.MapFrom(s => decimal.Parse(s.CostlyExpendituresTotal)));
+            //Mapper.CreateMap<ExemptionViewModel, Exemption>()
+            //    .ForMember(d => d.Moe, op => op.Ignore())
+            //    //.ForMember(d => d.Staffs, op => op.Ignore())
+            //    //.ForMember(d => d.Students, op => op.Ignore())
+            //    ;
 
-            //Mapper.CreateMap<CostlyExpenditure, CostlyExpenditureViewModel>();
-            //Mapper.CreateMap<CostlyExpenditureViewModel, CostlyExpenditure>()
-            //    .ForMember(d => d.Total, op => op.MapFrom(s => decimal.Parse(s.Total)));
+            ////Mapper.CreateMap<CostlyExpenditure, CostlyExpenditureViewModel>();
+            ////Mapper.CreateMap<CostlyExpenditureViewModel, CostlyExpenditure>()
+            ////    .ForMember(d => d.Total, op => op.MapFrom(s => decimal.Parse(s.Total)));
 
-            Mapper.CreateMap<CalendarEvent, CalendarEventForm>()
-                .ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.Date.Date))
-                .ForMember(dest => dest.EventHour, opt => opt.MapFrom(src => src.Date.Hour))
-                .ForMember(dest => dest.EventMinute, opt => opt.MapFrom(src => src.Date.Minute));
+            //Mapper.CreateMap<CalendarEvent, CalendarEventForm>()
+            //    .ForMember(dest => dest.EventDate, opt => opt.MapFrom(src => src.Date.Date))
+            //    .ForMember(dest => dest.EventHour, opt => opt.MapFrom(src => src.Date.Hour))
+            //    .ForMember(dest => dest.EventMinute, opt => opt.MapFrom(src => src.Date.Minute));
 
             Mapper.AssertConfigurationIsValid();
 
