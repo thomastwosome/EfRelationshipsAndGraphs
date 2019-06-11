@@ -2,11 +2,10 @@
 {
     public class DirectSupport
     {
-        //[Key] //, ForeignKey("Moe")
         public int DirectSupportId { get; set; }
 
         public string DirectSupportName { get; set; }
 
-        public Moe Moe { get; set; }
+        public virtual Moe Moe { get; set; }
     }
 }

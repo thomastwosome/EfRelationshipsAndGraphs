@@ -13,11 +13,10 @@
 
         /* Navigational Properties */
         public int CharterId { get; set; }
-        public Charter Charter { get; set; }
+        public virtual Charter Charter { get; set; }
 
         public virtual Expenditure Expenditure { get; set; }
         public virtual DirectSupport DirectSupport { get; set; }
 
-        //public Exemption Exemption { get; set; }
     }
 }

@@ -98,27 +98,9 @@ namespace EfRelationshipsAndGraphs.Controllers
                 moe.MoeName = model.MoeName;
                 //moe = model.ToEntity(); Why doesn't this work?
 
-                #region Expenditure
-
-                if (moe.Expenditure != null && model.ExpenditureName == null) //Delete
-                {
-                    var expenditure = moe.Expenditure;
-                    _db.Expenditures.Remove(expenditure);
-                }
-
                 if (model.ExpenditureName != null) //Create/Edit
                 {
                     moe.Expenditure = Mapper.Map<MoeViewModel, Expenditure>(model);
-                }
-
-                #endregion
-
-                #region DirectSupport
-
-                if (moe.DirectSupport != null && model.DirectSupportName == null) //Delete
-                {
-                    var directSupport = moe.DirectSupport;
-                    _db.DirectSupports.Remove(directSupport);
                 }
 
                 if (model.DirectSupportName != null) //Create/Edit
@@ -126,7 +108,18 @@ namespace EfRelationshipsAndGraphs.Controllers
                     moe.DirectSupport = Mapper.Map<MoeViewModel, DirectSupport>(model);
                 }
 
-                #endregion
+                //Deletions
+                if (model.ExpenditureName == null)
+                {
+                    var expenditure = moe.Expenditure;
+                    if (expenditure != null) _db.Expenditures.Remove(expenditure);
+                }
+                if (model.DirectSupportName == null)
+                {
+                    var directSupport = moe.DirectSupport;
+                    if (directSupport != null) _db.DirectSupports.Remove(directSupport);
+                }
+
             }
 
             var entries = _db.ChangeTracker.Entries().ToList();
