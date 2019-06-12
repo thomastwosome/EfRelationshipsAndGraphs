@@ -1,10 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using EfRelationshipsAndGraphs.Core.Domain;
 
 namespace EfRelationshipsAndGraphs.ViewModels
 {
     public class MoeViewModel
     {
+        public MoeViewModel()
+        {
+            CostlyExpenditures = new List<CostlyExpenditureViewModel>();
+        }
         public int MoeId { get; set; }
 
         [Required]
@@ -20,24 +25,28 @@ namespace EfRelationshipsAndGraphs.ViewModels
         [Display(Name = "Charter")]
         public string CharterName { get; set; }
 
-        public int ExpenditureId { get; set; }
+        //public int ExpenditureId { get; set; }
 
         [Display(Name = "Expenditure")]
         public string ExpenditureName { get; set; }
         public virtual Expenditure Expenditure { get; set; }
 
-        public int DirectSupportId { get; set; }
+        //public int DirectSupportId { get; set; }
 
         [Display(Name = "Direct Support")]
         public string DirectSupportName { get; set; }
 
         public virtual DirectSupport DirectSupport { get; set; }
 
-        public int ExemptionId { get; set; }
+        //public int ExemptionId { get; set; }
 
         [Display(Name = "One-Time Exemption")]
         public string ExemptionName { get; set; }
 
         public virtual Exemption Exemption { get; set; }
+
+        public List<CostlyExpenditureViewModel> CostlyExpenditures { get; set; }
+        public string CostlyExpendituresTotal { get; set; }
+
     }
 }

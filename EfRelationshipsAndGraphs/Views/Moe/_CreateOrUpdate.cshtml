@@ -25,32 +25,41 @@
 @Html.EditorFor(m => m.ExemptionName, new { htmlAttributes = new { @class = "form-control" } })
 @Html.ValidationMessageFor(m => m.ExemptionName, "", new { @class = "text-danger" })
 
-@*<table id="CostlyExpenditures" class="table table-bordered" style="margin-bottom:0px;">
-            <thead>
-                <tr>
-                    <td colspan="3">
-                        <p><strong>4. The termination of costly expenditures for long-term purchases, such as the acquisition of equipment or the construction of school facilities (must have per unit cost of $5,000 or more).</strong></p>
-                    </td>
-                </tr>
-                <tr class="header-row">
-                    <th>Description of Expenditure<span class="text-danger"> *</span></th>
-                    <th width="13%">Total<span class="text-danger"> *</span></th>
-                    <th width="8%">Action<span class="text-danger"> *</span></th>
-                </tr>
-            </thead>
-            <tbody>
-                @Html.Partial("_CostlyExpenditure", Model.Exemption.CostlyExpenditures)
-            </tbody>
-            <tfoot>
-                <tr>
-                    <td class="text-right midAligned"><strong><em>4. Total Termination of Costly Expenditures</em></strong></td>
-                    <td>@Html.EditorFor(m => m.Exemption.CostlyExpendituresTotal, new { htmlAttributes = new { @class = "form-control calculation", @readonly = "readonly" } })</td>
-                    <td></td>
-                </tr>
-            </tfoot>
-        </table>*@
+<table id="CostlyExpenditures" class="table table-bordered" style="margin-bottom:0;">
+    <thead>
+        <tr>
+            <td colspan="3">
+                <p><strong>4. The termination of costly expenditures for long-term purchases, such as the acquisition of equipment or the construction of school facilities (must have per unit cost of $5,000 or more).</strong></p>
+            </td>
+        </tr>
+        <tr class="header-row">
+            <th>Description of Expenditure<span class="text-danger"> *</span></th>
+            <th width="13%">Total<span class="text-danger"> *</span></th>
+            <th width="8%">Action<span class="text-danger"> *</span></th>
+        </tr>
+    </thead>
+    <tbody>
+        @Html.Partial("_CostlyExpenditure", Model.CostlyExpenditures)
+    </tbody>
+    <tfoot>
+        <tr>
+            <td class="text-right midAligned"><strong><em>4. Total Termination of Costly Expenditures</em></strong></td>
+            <td>@Html.EditorFor(m => m.CostlyExpendituresTotal, new { htmlAttributes = new { @class = "form-control calculation", @readonly = "readonly" } })</td>
+            <td></td>
+        </tr>
+    </tfoot>
+</table>
 
 <script>
+    $(document).ready(function () {
+        doTheMoeMath();
+        reset();
+    });
+
+    $('.data-entry').change(function () {
+        doTheMoeMath();
+    });
+
     function markAsChanged() {
         var changedRow = $(this).parents("tr.existing-row");
         if (changedRow.hasClass("has-changed") === false) {
@@ -67,12 +76,12 @@
         confirm(null, `Are you sure you want to delete ${$(existingRow).find("input[name$='Description']").val()}?`, function () {
             $.ajax(
             {
-                url: '/Fiscal/Moe/DeleteExpenditure',
+                url: '/Moe/DeleteExpenditure',
                 type: 'POST',
                 datatype: 'json',
                 data:
                 {
-                    id: $(existingRow).find("input[name$='Id']").val()
+                    id: $(existingRow).find("input[name$='CostlyExpenditureId']").val()
                 }
             })
             .done(function (data) {
@@ -101,8 +110,8 @@
         for (var i = 0; i < changedRows.length; i++) {
             var row = changedRows[i];
             var data = {
-                ExemptionId: $('#ExemptionId').val(),
-                Id: $(row).find("input[name$='Id']").val(),
+                //ExemptionId: $('#ExemptionId').val(),
+                Id: $(row).find("input[name$='CostlyExpenditureId']").val(),
                 Description: $(row).find("input[name$='Description']").val(),
                 Total: $(row).find("input[name$='Total']").val()
             };
@@ -111,13 +120,13 @@
 
         $.ajax(
         {
-            url: '/Fiscal/Moe/UpdateExpenditures',
+            url: '/Moe/UpdateExpenditures',
             type: 'POST',
             datatype: 'json',
             data:
             {
                 list: submitData,
-                moeId: $('#Id').val(),
+                moeId: $('#MoeId').val(),
                 charterId: $('#CharterId').val()
             }
         })
@@ -135,7 +144,7 @@
             }
             reset();
         })
-        .fail(function (jXhr, result, textStatus) { notify(`Communication failure in 'updateStudents': ${textStatus}`); });
+        .fail(function (jXhr, result, textStatus) { notify(`Communication failure in 'updateExpenditures': ${textStatus}`); });
     }
 
     function reset() {
@@ -148,5 +157,62 @@
 
         $('#Save, #Submit, #CostlyExpAddRow').off('click', updateExpenditures);
         $('#Save, #Submit, #CostlyExpAddRow').on('click', updateExpenditures);
+    }
+
+    function doTheMoeMath() {
+        //4. One time prior year expenditures
+        let costlyExpendituresTotal = 0;
+        $('#CostlyExpendituresTotal').val(costlyExpendituresTotal);
+        let rowCountExps = $('#CostlyExpenditures tbody tr').length;
+        for (let i = 0; i < rowCountExps; i++) {
+            let lineTotal = getFloatByName('CostlyExpenditures', 'Total', i);
+            $(`#CostlyExpenditures > tbody > tr > td > input[name='[${i}].Total']`).val(lineTotal);
+
+            costlyExpendituresTotal += lineTotal;
+            $('#CostlyExpendituresTotal').val(costlyExpendituresTotal);
+
+            numToStringByName('CostlyExpenditures', 'Total', i);
+        }
+        //$('#Exemption4StateLocal').val(costlyExpendituresTotal);
+        //$('#Exemption4LocalOnly').val(costlyExpendituresTotal);
+        
+        $('input.provided,input.data-entry,input.calculation').each(function () {
+            const id = $(this).attr('id');
+            numToString(id);
+        });
+    }
+
+    function getFloatByName(table, name, i) {
+        const str = `#${table} > tbody > tr > td > input[name='[${i}].${name}']`;
+        let temp = $(str).val();
+        if (temp === undefined) return 0;
+        if (temp !== '' && temp !== null) {
+            temp = temp.replace(/,/g, '');
+            temp = parseFloat(temp);
+            return temp;
+        }
+        else {
+            return 0;
+        }
+    }
+
+    function numToString(id) {
+        const str = `#${id}`;
+        let num = $(str).val();
+        if (num !== undefined && num !== null) {
+            num = parseFloat(num.replace(/,/g, ''));
+            num = num.toLocaleString();
+        }
+        $(str).val(num);
+    }
+
+    function numToStringByName(table, name, i) {
+        const str = `#${table} > tbody > tr > td > input[name='[${i}].${name}']`;
+        let temp = $(str).val();
+        if (temp !== undefined && temp !== null) {
+            temp = parseFloat(temp.replace(/,/g, ''));
+            temp = temp.toLocaleString();
+        }
+        $(str).val(temp);
     }
 </script>

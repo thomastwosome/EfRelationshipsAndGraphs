@@ -30,7 +30,7 @@ namespace EfRelationshipsAndGraphs
             return model;
         }
 
-        public static Moe ToEntity(this MoeViewModel model) //Only work on CREATE, not UPDATE
+        public static Moe ToEntity(this MoeViewModel model) //Only works on CREATE, not UPDATE
         {
             var entity = Mapper.Map<MoeViewModel, Moe>(model);
 
@@ -53,28 +53,9 @@ namespace EfRelationshipsAndGraphs
 
         #endregion
 
-        //#region Costly Expenditures
-
-        //public static CostlyExpenditureViewModel ToModel(this CostlyExpenditure entity)
-        //{
-        //    return Mapper.Map<CostlyExpenditure, CostlyExpenditureViewModel>(entity);
-        //}
-
-        //public static CostlyExpenditure ToEntity(this CostlyExpenditureViewModel model)
-        //{
-        //    return Mapper.Map<CostlyExpenditureViewModel, CostlyExpenditure>(model);
-        //}
-
-        //public static CostlyExpenditure ToEntity(this CostlyExpenditureViewModel model, CostlyExpenditure entity)
-        //{
-        //    return Mapper.Map(model, entity);
-        //}
-
-        //public static IEnumerable<CostlyExpenditureViewModel> ToCollection(this IEnumerable<CostlyExpenditure> entities)
-        //{
-        //    return Mapper.Map<IEnumerable<CostlyExpenditure>, IEnumerable<CostlyExpenditureViewModel>>(entities);
-        //}
-
-        //#endregion
+        public static IEnumerable<CostlyExpenditureViewModel> ToCollection(this IEnumerable<CostlyExpenditure> entities)
+        {
+            return Mapper.Map<IEnumerable<CostlyExpenditure>, IEnumerable<CostlyExpenditureViewModel>>(entities);
+        }
     }
 }

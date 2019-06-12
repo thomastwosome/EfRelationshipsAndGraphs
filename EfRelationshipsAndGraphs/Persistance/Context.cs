@@ -36,6 +36,7 @@ namespace EfRelationshipsAndGraphs.Persistance
         public virtual DbSet<Expenditure> Expenditures { get; set; }
         public virtual DbSet<DirectSupport> DirectSupports { get; set; }
         public virtual DbSet<Exemption> Exemptions { get; set; }
+        public virtual DbSet<CostlyExpenditure> CostlyExpenditures { get; set; }
 
         public static ApplicationDbContext Create()
         {
@@ -64,24 +65,24 @@ namespace EfRelationshipsAndGraphs.Persistance
                 .WithRequired(x => x.Moe)
                 .WillCascadeOnDelete();
 
-            ////Exemption and it's children
-            //modelBuilder.Entity<Exemption>()
-            //    .HasMany(x => x.Staffs)
-            //    .WithRequired(x => x.Exemption)
-            //    .HasForeignKey(x => x.MoeId)
-            //    .WillCascadeOnDelete();
+            //Exemption and it's children
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.Staffs)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
-            //modelBuilder.Entity<Exemption>()
-            //    .HasMany(x => x.Students)
-            //    .WithRequired(x => x.Exemption)
-            //    .HasForeignKey(x => x.MoeId)
-            //    .WillCascadeOnDelete();
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.Students)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
-            //modelBuilder.Entity<Exemption>()
-            //    .HasMany(x => x.CostlyExpenditures)
-            //    .WithRequired(x => x.Exemption)
-            //    .HasForeignKey(x => x.MoeId)
-            //    .WillCascadeOnDelete();
+            modelBuilder.Entity<Exemption>()
+                .HasMany(x => x.CostlyExpenditures)
+                .WithRequired(x => x.Exemption)
+                .HasForeignKey(x => x.MoeId)
+                .WillCascadeOnDelete();
 
             base.OnModelCreating(modelBuilder);
         }

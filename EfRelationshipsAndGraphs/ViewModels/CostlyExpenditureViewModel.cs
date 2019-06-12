@@ -15,6 +15,6 @@ namespace EfRelationshipsAndGraphs.ViewModels
         /* Navigational Properties */
 
         public int MoeId { get; set; }
-        public ExemptionViewModel Exemption { get; set; }
+        public virtual ExemptionViewModel Exemption { get; set; }
     }
 }

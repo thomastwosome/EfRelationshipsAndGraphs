@@ -1,8 +1,8 @@
 ﻿@model List<EfRelationshipsAndGraphs.ViewModels.CostlyExpenditureViewModel>
 
-@for (var i = 0; i < Model.Count(); i++)
+@for (var i = 0; i < Model.Count; i++)
 {
-    var rowClass = "existing-row" + ((i == 0) ? " new-row" : "");
+    var rowClass = "existing-row" + (i == 0 ? " new-row" : "");
 
     <tr class="@rowClass">
         <td>

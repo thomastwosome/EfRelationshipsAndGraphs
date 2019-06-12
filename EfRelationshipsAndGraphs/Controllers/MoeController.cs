@@ -2,6 +2,7 @@
 using EfRelationshipsAndGraphs.Persistance;
 using EfRelationshipsAndGraphs.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
@@ -31,7 +32,7 @@ namespace EfRelationshipsAndGraphs.Controllers
                 .FirstOrDefault(x => x.MoeId == moeId);
 
             var model = moe.ToModel();
-
+            model.CostlyExpenditures = CreateExpendituresList(model.MoeId);
             return model;
         }
 
@@ -39,6 +40,7 @@ namespace EfRelationshipsAndGraphs.Controllers
         {
             var charter = _db.Charters.Find(charterId);
             var model = charter.ToModel();
+            model.CostlyExpenditures = CreateExpendituresList(model.MoeId);
 
             return View(model);
         }
@@ -151,99 +153,95 @@ namespace EfRelationshipsAndGraphs.Controllers
             return Json(Url.Action("Index"), JsonRequestBehavior.AllowGet);
         }
 
-        //public List<CostlyExpenditureViewModel> CreateExpendituresList(int moeId)
-        //{
-        //    var models = new List<CostlyExpenditureViewModel>();
-        //    //New row
-        //    var newModel = new CostlyExpenditureViewModel
-        //    {
-        //        MoeId = moeId,
-        //        Description = string.Empty,
-        //        Total = null
-        //    };
-        //    models.Add(newModel);
+        public List<CostlyExpenditureViewModel> CreateExpendituresList(int moeId)
+        {
+            var models = new List<CostlyExpenditureViewModel>();
+            //New row
+            var newModel = new CostlyExpenditureViewModel
+            {
+                MoeId = moeId,
+                Description = string.Empty,
+                Total = null
+            };
+            models.Add(newModel);
 
-        //    var entity = _db.Moes.Include("Exemption.CostlyExpenditures")
-        //                            .FirstOrDefault(x => x.MoeId == moeId);
-        //    if (entity != null)
-        //    {
-        //        if (entity.Exemption != null)
-        //        {
-        //            var existExps = entity.Exemption.CostlyExpenditures;
-        //            var existExpsModels = existExps.ToCollection();
-        //            models.AddRange(existExpsModels);
-        //        }
-        //    }
+            var entity = _db.Moes.Include("Exemption.CostlyExpenditures")
+                                    .FirstOrDefault(x => x.MoeId == moeId);
 
-        //    return models;
-        //}
+            if (entity?.Exemption != null)
+            {
+                var existExps = entity.Exemption.CostlyExpenditures;
+                var existExpsModels = existExps.ToCollection();
+                models.AddRange(existExpsModels);
+            }
 
-        //[HttpPost]
-        //public ActionResult UpdateExpenditures(List<CostlyExpenditureViewModel> list, int moeId, int charterId)
-        //{
-        //    if (charterId == 0)
-        //        return Json(new { success = false, message = "You must pick a Charter School first." });
+            return models;
+        }
 
-        //    //if (list == null || list.Count == 0)
-        //    //    return Json(new { success = false, message = "No changes submitted." });
+        [HttpPost]
+        public ActionResult UpdateExpenditures(List<CostlyExpenditureViewModel> list, int moeId, int charterId)
+        {
+            if (charterId == 0)
+                return Json(new { success = false, message = "You must pick a Charter School first." });
 
-        //    if (moeId == 0)
-        //        moeId = GetMoeId(charterId);
+            //if (list == null || list.Count == 0)
+            //    return Json(new { success = false, message = "No changes submitted." });
 
-        //    var exemptionId = GetExemptionId(moeId, charterId);
+            //if (moeId == 0)
+            //    moeId = GetMoeId(charterId);
 
-        //    foreach (var item in list)
-        //    {
-        //        if (string.IsNullOrEmpty(item.Description))
-        //            return Json(new { success = false, message = "Please provide a name." });
+            //var exemptionId = GetExemptionId(moeId, charterId);
 
-        //        if (item.Id == 0)
-        //        {
-        //            var entity = Mapper.Map<CostlyExpenditure>(item);
-        //            entity.ExemptionId = exemptionId;
-        //            Cxt.CostlyExpenditures.Add(entity);
-        //        }
-        //        else
-        //        {
-        //            var entity = Cxt.CostlyExpenditures.Find(item.Id);
-        //            if (entity != null)
-        //            {
-        //                entity.Description = item.Description;
-        //                entity.Total = Convert.ToDecimal(item.Total);
-        //            }
-        //        }
-        //    }
+            foreach (var item in list)
+            {
+                if (string.IsNullOrEmpty(item.Description))
+                    return Json(new { success = false, message = "Please provide a name." });
 
-        //    Cxt.SaveChanges();
+                if (item.CostlyExpenditureId == 0)
+                {
+                    var entity = Mapper.Map<CostlyExpenditure>(item);
+                    entity.MoeId = moeId; //Why?
+                    _db.CostlyExpenditures.Add(entity);
+                }
+                else
+                {
+                    var entity = _db.CostlyExpenditures.Find(item.CostlyExpenditureId);
+                    if (entity != null)
+                    {
+                        entity.Description = item.Description;
+                        entity.Total = Convert.ToDecimal(item.Total);
+                    }
+                }
+            }
 
-        //    var newList = CreateExpendituresList(exemptionId);
+            _db.SaveChanges();
 
-        //    return Json(new
-        //    {
-        //        success = true,
-        //        partial = CommonHelpers.RenderPartialToString(this, "_CostlyExpenditure", null, newList)
-        //    });
-        //}
+            var newList = CreateExpendituresList(moeId);
 
-        //public ActionResult DeleteExpenditure(int moeId, int id)
-        //{
-        //    var moe = _db.Moes
-        //                            .Include("Exemption.CostlyExpenditures")
-        //                            .FirstOrDefault(x => x.MoeId == moeId);
+            return Json(new
+            {
+                success = true,
+                partial = CommonHelpers.RenderPartialToString(this, "_CostlyExpenditure", null, newList)
+            });
+        }
 
-        //    var expToDelete = moe.Exemption.CostlyExpenditures.FirstOrDefault(x => x.CostlyExpenditureId == id);
-        //    moe.Exemption.CostlyExpenditures.Remove(expToDelete);
-        //    _db.SaveChanges();
+        public ActionResult DeleteExpenditure(int moeId, int id)
+        {
+            var moe = _db.Moes
+                        .Include("CostlyExpenditures")
+                        .FirstOrDefault(x => x.MoeId == moeId);
 
-        //    var list = CreateExpendituresList(moe.MoeId);
+            var expToDelete = moe.Exemption.CostlyExpenditures.FirstOrDefault(x => x.CostlyExpenditureId == id);
+            moe.Exemption.CostlyExpenditures.Remove(expToDelete);
+            _db.SaveChanges();
 
-        //    return Json(new
-        //    {
-        //        success = true,
-        //        partial = CommonHelpers.RenderPartialToString(this, "_CostlyExpenditure", null, list)
-        //    });
-        //}
+            var list = CreateExpendituresList(moe.MoeId);
 
-
+            return Json(new
+            {
+                success = true,
+                partial = CommonHelpers.RenderPartialToString(this, "_CostlyExpenditure", null, list)
+            });
+        }
     }
 }

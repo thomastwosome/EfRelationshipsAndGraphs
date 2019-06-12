@@ -16,6 +16,6 @@ namespace EfRelationshipsAndGraphs.Core.Domain
         /* Navigational Properties */
 
         public int MoeId { get; set; }
-        public Exemption Exemption { get; set; }
+        public virtual Exemption Exemption { get; set; }
     }
 }
